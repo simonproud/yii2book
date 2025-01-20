@@ -3,6 +3,10 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * @property array|mixed|object|null $author_id
+ * @property array|mixed|object|null $phone
+ */
 class Subscription extends ActiveRecord
 {
     public static function tableName()
