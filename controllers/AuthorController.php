@@ -28,19 +28,6 @@ class AuthorController extends Controller
         parent::__construct($id, $module, $config);
     }
 
-    public function init(): void
-    {
-        parent::init();
-
-        $this->on(
-            UserSubscribed::NAME,
-            [
-                new UserSubscribedSmsHandler(),
-                'handle',
-            ]
-        );
-    }
-
     public function behaviors()
     {
         return array_merge(

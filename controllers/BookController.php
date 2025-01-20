@@ -25,19 +25,6 @@ class BookController extends Controller
         parent::__construct($id, $module, $config);
     }
 
-    public function init()
-    {
-        parent::init();
-
-        $this->on(
-            BookCreated::NAME,
-            [
-                new BookCreatedSmsHandler(),
-                'handle',
-            ]
-        );
-    }
-
     /**
      * @inheritDoc
      */
