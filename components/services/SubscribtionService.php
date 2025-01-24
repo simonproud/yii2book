@@ -13,15 +13,15 @@ class SubscribtionService
         $subscription = new Subscription();
         $subscription->author_id = $authorId;
         $subscription->phone = $phone ?? \Yii::$app->user->identity->phone;
+        $result = $subscription->save();
 
-        $event = new UserSubscribed();
-        $event->userId = Yii::$app->user->identity->id;
-        $event->authorId = $authorId;
-        Yii::$app->trigger(UserSubscribed::NAME, $event);
+        if ($result) {
+            $this->triggerSubscribed($authorId);
+        }
 
-        return $subscription->save();
-
+        return $result;
     }
+
     public function unsubscribe(int $authorId): bool
     {
         return Subscription::deleteAll([
@@ -35,5 +35,17 @@ class SubscribtionService
         return Subscription::find()
             ->where(['author_id' => $authorId, 'phone' => $phone])
             ->exists();
+    }
+
+    /**
+     * @param int $authorId
+     * @return void
+     */
+    public function triggerSubscribed(int $authorId): void
+    {
+        $event = new UserSubscribed();
+        $event->userId = Yii::$app->user->identity->id;
+        $event->authorId = $authorId;
+        Yii::$app->trigger(UserSubscribed::NAME, $event);
     }
 }
